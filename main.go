@@ -58,6 +58,8 @@ func main() {
 		api.GET("/product", middlewares.Authentication(), handler.GetProduct)
 		api.GET("/product/sales", middlewares.Authentication(), handler.GetProductSales)
 		api.GET("/product/:id", middlewares.Authentication(), handler.GetOneProduct)
+		api.GET("/detail-product/:id", middlewares.Authentication(), handler.GetOneProductDetail)
+		api.GET("/product-category/:id", middlewares.Authentication(), handler.GetOneProductCategory)
 
 		//size
 		api.POST("/size", middlewares.Authentication(), handler.PostSize)
@@ -66,6 +68,11 @@ func main() {
 		//shipping
 		api.POST("/shipping", middlewares.Authentication(), handler.PostShipping)
 		api.PUT("/shipping", middlewares.Authentication(), handler.PutShipping)
+
+		//package
+		api.POST("/package", middlewares.Authentication(), handler.PostPackage)
+		api.PUT("/package", middlewares.Authentication(), handler.PutPackage)
+		api.GET("/package/:id", middlewares.Authentication(), handler.GetOnePackage)
 
 	}
 

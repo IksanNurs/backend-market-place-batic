@@ -4,6 +4,12 @@
 
 package model
 
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
+
 const TableNamePackage = "package"
 
 // Package mapped from table <package>
@@ -13,13 +19,59 @@ type Package struct {
 	SizeID    int32  `gorm:"column:size_id;type:int(11);not null" json:"size_id"`
 	ProductID int32  `gorm:"column:product_id;type:int(11);not null" json:"product_id"`
 	MethodID  int32  `gorm:"column:method_id;type:int(11);not null" json:"method_id"`
+	ShippingID  int32  `gorm:"column:shipping_id;type:int(11);not null" json:"shipping_id"`
 	Note      string `gorm:"column:note;type:text;not null" json:"note"`
 	Address   string `gorm:"column:address;type:text;not null" json:"address"`
 	CreatedAt int32  `gorm:"column:created_at;type:int(11);not null" json:"created_at"`
 	UpdatedAt int32  `gorm:"column:updated_at;type:int(11);not null" json:"updated_at"`
+	Size       Size `gorm:"foreignkey:SizeID" json:"Size"`
+	Motif      Motif `gorm:"foreignkey:MotifID" json:"Motif"`
+	Product    Product `gorm:"foreignkey:ProductID" json:"Product"`
+	Method     Method `gorm:"foreignkey:MethodID" json:"Method"`
+	Shipping   Shipping `gorm:"foreignkey:ShippingID" json:"Shipping"`
 }
+
+type InputPackage struct {
+	MotifID   int32  `gorm:"column:motif_id;type:int(11);not null" json:"motif_id"`
+	SizeID    int32  `gorm:"column:size_id;type:int(11);not null" json:"size_id"`
+	ProductID int32  `gorm:"column:product_id;type:int(11);not null" json:"product_id"`
+	MethodID  int32  `gorm:"column:method_id;type:int(11);not null" json:"method_id"`
+	ShippingID  int32  `gorm:"column:shipping_id;type:int(11);not null" json:"shipping_id"`
+	Note      string `gorm:"column:note;type:text;not null" json:"note"`
+	Address   string `gorm:"column:address;type:text;not null" json:"address"`
+	CreatedAt int32  `gorm:"column:created_at;type:int(11);not null" json:"created_at"`
+}
+
+type UpdatePackage struct {
+	ID        int32  `gorm:"column:id;type:int(11);primaryKey;autoIncrement:true" json:"id"`
+	MotifID   int32  `gorm:"column:motif_id;type:int(11);not null" json:"motif_id"`
+	SizeID    int32  `gorm:"column:size_id;type:int(11);not null" json:"size_id"`
+	ProductID int32  `gorm:"column:product_id;type:int(11);not null" json:"product_id"`
+	MethodID  int32  `gorm:"column:method_id;type:int(11);not null" json:"method_id"`
+    ShippingID  int32  `gorm:"column:shipping_id;type:int(11);not null" json:"shipping_id"`
+	Note      string `gorm:"column:note;type:text;not null" json:"note"`
+	Address   string `gorm:"column:address;type:text;not null" json:"address"`
+}
+
+
+
+func (i *InputPackage) BeforeCreate(scope *gorm.Scope) error {
+    now := int32(time.Now().Unix())
+    i.CreatedAt = now
+
+    return nil
+}
+
+
 
 // TableName Package's table name
 func (*Package) TableName() string {
+	return TableNamePackage
+}
+func (*InputPackage) TableName() string {
+	return TableNamePackage
+}
+
+func (*UpdatePackage) TableName() string {
 	return TableNamePackage
 }

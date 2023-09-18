@@ -25,6 +25,8 @@ type Product struct {
 	Image      string `gorm:"column:image;type:text;not null" json:"image"`
 	CreatedAt  int32  `gorm:"column:created_at;type:int(11);not null" json:"created_at"`
 	UpdatedAt  int32  `gorm:"column:updated_at;type:int(11);not null" json:"updated_at"`
+	Size       []Size `gorm:"foreignkey:ProductID" json:"Size"`
+	Motif      []Motif `gorm:"foreignkey:ProductID" json:"Motif"`
 }
 
 

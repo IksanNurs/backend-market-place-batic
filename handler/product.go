@@ -175,3 +175,49 @@ func GetOneProduct(c *gin.Context) {
 	})
 	c.JSON(http.StatusOK, response)
 }
+
+func GetOneProductDetail(c *gin.Context) {
+	db := database.GetDB()
+	paramproduct := c.Param("id")
+	var product []models1.Product
+	err := db.Debug().
+	   Preload("Size").
+	   Preload("Motif").
+		Where("id = ?", paramproduct).
+		Find(&product).
+		Error
+
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+		response := helpers.APIResponse("gagal menampilkan data product!", http.StatusInternalServerError, errorMessage)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helpers.APIResponse("Berhasil menampilkan data product", http.StatusOK, gin.H{
+		"product": product,
+	})
+	c.JSON(http.StatusOK, response)
+}
+
+func GetOneProductCategory(c *gin.Context) {
+	db := database.GetDB()
+	paramproduct := c.Param("id")
+	var product []models1.Product
+	err := db.Debug().
+		Where("category_id = ?", paramproduct).
+		Find(&product).
+		Error
+
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+		response := helpers.APIResponse("gagal menampilkan data product!", http.StatusInternalServerError, errorMessage)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helpers.APIResponse("Berhasil menampilkan data product", http.StatusOK, gin.H{
+		"product": product,
+	})
+	c.JSON(http.StatusOK, response)
+}

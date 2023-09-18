@@ -3,9 +3,7 @@ package middlewares
 import (
 	"e-commerce/helpers"
 	"net/http"
-	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,7 +17,7 @@ func Authentication() gin.HandlerFunc {
 			})
 			return
 		}
-		userData := verifyToken.(jwt.MapClaims)
+		//userData := verifyToken.(jwt.MapClaims)
 		// err = db.Debug().Table("user").Where("id=?", userID).First(&User).Error
 		// if err != nil {
 		// 	errorMessage := gin.H{"errors": err.Error()}
@@ -34,15 +32,15 @@ func Authentication() gin.HandlerFunc {
 		// 	return
 		// }
 
-		jwtCreatedat := int64(userData["expired_at"].(float64))
-		timenow := time.Now().Unix()
+		// jwtCreatedat := int64(userData["expired_at"].(float64))
+		// timenow := time.Now().Unix()
 
-		if timenow > int64(jwtCreatedat) {
-			errorMessage := gin.H{"errors": "token expired"}
-			response := helpers.APIResponse("Unauthorized5", http.StatusUnauthorized, errorMessage)
-			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
-			return
-		}
+		// if timenow > int64(jwtCreatedat) {
+		// 	errorMessage := gin.H{"errors": "token expired"}
+		// 	response := helpers.APIResponse("Unauthorized5", http.StatusUnauthorized, errorMessage)
+		// 	c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		// 	return
+		// }
 
 		c.Set("userData", verifyToken)
 		c.Next()
