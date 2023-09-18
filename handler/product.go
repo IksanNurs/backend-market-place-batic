@@ -117,7 +117,7 @@ func GetProductSales(c *gin.Context) {
 	userID := int(userData["user_id"].(float64))
 	var product []models1.Product
 	err := db.Debug().
-	    Where("user_id=?",userID).
+		Where("user_id=?", userID).
 		Find(&product).
 		Error
 
@@ -138,6 +138,8 @@ func GetProduct(c *gin.Context) {
 	db := database.GetDB()
 	var product []models1.Product
 	err := db.Debug().
+		Preload("Size").
+		Preload("Motif").
 		Find(&product).
 		Error
 
@@ -159,6 +161,8 @@ func GetOneProduct(c *gin.Context) {
 	paramproduct := c.Param("id")
 	var product []models1.Product
 	err := db.Debug().
+		Preload("Size").
+		Preload("Motif").
 		Where("name LIKE ?", "%"+paramproduct+"%").
 		Find(&product).
 		Error
@@ -181,8 +185,8 @@ func GetOneProductDetail(c *gin.Context) {
 	paramproduct := c.Param("id")
 	var product []models1.Product
 	err := db.Debug().
-	   Preload("Size").
-	   Preload("Motif").
+		Preload("Size").
+		Preload("Motif").
 		Where("id = ?", paramproduct).
 		Find(&product).
 		Error
@@ -205,6 +209,8 @@ func GetOneProductCategory(c *gin.Context) {
 	paramproduct := c.Param("id")
 	var product []models1.Product
 	err := db.Debug().
+		Preload("Size").
+		Preload("Motif").
 		Where("category_id = ?", paramproduct).
 		Find(&product).
 		Error
