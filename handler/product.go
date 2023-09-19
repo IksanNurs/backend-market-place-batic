@@ -24,14 +24,6 @@ func PostProduct(c *gin.Context) {
 	userID := int(userData["user_id"].(float64))
 	if file != nil {
 		fileName = file.Filename
-		path := fmt.Sprintf("img/product/%d-%s", userID, file.Filename)
-		err = c.SaveUploadedFile(file, path)
-		if err != nil {
-			errorMessage := gin.H{"errors": err.Error()}
-			response := helpers.APIResponse("gagal menambah data product!", http.StatusInternalServerError, errorMessage)
-			c.JSON(http.StatusInternalServerError, response)
-			return
-		}
 	}
 	price, _ := strconv.Atoi(c.PostForm("price"))
 	weight, _ := strconv.Atoi(c.PostForm("weight"))
@@ -48,6 +40,16 @@ func PostProduct(c *gin.Context) {
 	response := helpers.APIResponse("berhasil menambah data product!", http.StatusOK, gin.H{
 		"product": product,
 	})
+	if file != nil {
+		path := fmt.Sprintf("img/product/%d-%s", product.ID, file.Filename)
+		err = c.SaveUploadedFile(file, path)
+		if err != nil {
+			errorMessage := gin.H{"errors": err.Error()}
+			response := helpers.APIResponse("gagal menambah data product!", http.StatusInternalServerError, errorMessage)
+			c.JSON(http.StatusInternalServerError, response)
+			return
+		}
+	}
 	c.JSON(http.StatusOK, response)
 }
 
@@ -63,14 +65,6 @@ func PutProduct(c *gin.Context) {
 	userID := int(userData["user_id"].(float64))
 	if file != nil {
 		fileName = file.Filename
-		path := fmt.Sprintf("img/product/%d-%s", userID, file.Filename)
-		err = c.SaveUploadedFile(file, path)
-		if err != nil {
-			errorMessage := gin.H{"errors": err.Error()}
-			response := helpers.APIResponse("gagal menambah data product!", http.StatusInternalServerError, errorMessage)
-			c.JSON(http.StatusInternalServerError, response)
-			return
-		}
 	}
 
 	price, _ := strconv.Atoi(c.PostForm("price"))
@@ -104,6 +98,16 @@ func PutProduct(c *gin.Context) {
 		errorMessage := gin.H{"errors": err.Error()}
 		c.JSON(http.StatusInternalServerError, errorMessage)
 		return
+	}
+	if file != nil {
+		path := fmt.Sprintf("img/product/%s-%s", c.PostForm("id"), file.Filename)
+		err = c.SaveUploadedFile(file, path)
+		if err != nil {
+			errorMessage := gin.H{"errors": err.Error()}
+			response := helpers.APIResponse("gagal menambah data product!", http.StatusInternalServerError, errorMessage)
+			c.JSON(http.StatusInternalServerError, response)
+			return
+		}
 	}
 	response := helpers.APIResponse("berhasil update data product!", http.StatusOK, gin.H{
 		"product": product,
