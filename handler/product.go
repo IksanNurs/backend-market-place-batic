@@ -77,7 +77,7 @@ func PutProduct(c *gin.Context) {
 	weight, _ := strconv.Atoi(c.PostForm("weight"))
 	stock, _ := strconv.Atoi(c.PostForm("stock"))
 	category_id, _ := strconv.Atoi(c.PostForm("category_id"))
-	product := models1.Product{Name: c.PostForm("name"), Image: fileName, Price: int32(price), CategoryID: int32(category_id), Weight: int32(weight), Stock: int32(stock), Deskripsi: c.PostForm("deskripsi"), UserID: int32(userID)}
+	product := models1.InputProduct{Name: c.PostForm("name"), Image: fileName, Price: int32(price), CategoryID: int32(category_id), Weight: int32(weight), Stock: int32(stock), Deskripsi: c.PostForm("deskripsi"), UserID: int32(userID)}
 	// contentType := helpers.GetContentType(c)
 	// if contentType == appJSON {
 	// 	if err := c.ShouldBindJSON(&product); err != nil {

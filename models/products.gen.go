@@ -30,6 +30,19 @@ type Product struct {
 }
 
 
+type InputProduct struct {
+	ID         int32  `gorm:"column:id;type:int(11);primaryKey;autoIncrement:true" json:"id"`
+	CategoryID int32  `gorm:"column:category_id;type:int(11);not null" json:"category_id"`
+	UserID int32  `gorm:"column:user_id;type:int(11);not null" json:"user_id"`
+	Name       string `gorm:"column:name;type:varchar(50);not null" json:"name"`
+	Deskripsi  string `gorm:"column:deskripsi;type:text;not null" json:"deskripsi"`
+	Price      int32  `gorm:"column:price;type:int(11);not null" json:"price"`
+	Stock      int32  `gorm:"column:stock;type:int(11);not null" json:"stock"`
+	Weight     int32  `gorm:"column:weight;type:int(11);not null" json:"weight"`
+	Image      string `gorm:"column:image;type:text;not null" json:"image"`
+}
+
+
 func (i *Product) BeforeCreate(scope *gorm.Scope) error {
     now := int32(time.Now().Unix())
     i.CreatedAt = now
@@ -41,3 +54,8 @@ func (i *Product) BeforeCreate(scope *gorm.Scope) error {
 func (*Product) TableName() string {
 	return TableNameProduct
 }
+
+func (*InputProduct) TableName() string {
+	return TableNameProduct
+}
+
