@@ -33,6 +33,13 @@ type InputUser struct {
 	PasswordHash string `gorm:"column:password_hash;type:varchar(255);not null" json:"password_hash"`
 }
 
+type UpdateUser struct {
+	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name"`
+	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email"`
+	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
+}
+
+
 
 
 func (i *User) BeforeCreate(scope *gorm.Scope) error {
@@ -46,6 +53,11 @@ func (i *User) BeforeCreate(scope *gorm.Scope) error {
 
 // TableName User's table name
 func (*User) TableName() string {
+	return TableNameUser
+}
+
+
+func (*UpdateUser) TableName() string {
 	return TableNameUser
 }
 

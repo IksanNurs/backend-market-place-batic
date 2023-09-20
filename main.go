@@ -39,6 +39,8 @@ func main() {
 		//user
 		api.POST("/auth/login", handler.Login)
 		api.POST("/auth/register", handler.Register)
+		api.GET("/user", middlewares.Authentication(), handler.GetOneUser)
+		api.PUT("/user", middlewares.Authentication(), handler.PutUser)
 
 		//category
 		api.POST("/category", middlewares.Authentication(), handler.PostCategory)

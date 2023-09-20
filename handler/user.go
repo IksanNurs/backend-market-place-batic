@@ -6,6 +6,7 @@ import (
 	models1 "e-commerce/models"
 	"net/http"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -110,6 +111,62 @@ func Login(c *gin.Context) {
 	response := helpers.APIResponse("berhasil login akun!", http.StatusOK, gin.H{
 		"token": user.AuthKey,
 		"user":  user,
+	})
+	c.JSON(http.StatusOK, response)
+}
+
+func GetOneUser(c *gin.Context) {
+	db := database.GetDB()
+	var category models1.User
+	userData := c.MustGet("userData").(jwt.MapClaims)
+	userID := int(userData["user_id"].(float64))
+	err := db.Debug().
+		Where("id=?", userID).
+		Find(&category).
+		Error
+
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+		response := helpers.APIResponse("gagal menampilkan data user!", http.StatusInternalServerError, errorMessage)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helpers.APIResponse("Berhasil menampilkan data user", http.StatusOK, gin.H{
+		"user": category,
+	})
+	c.JSON(http.StatusOK, response)
+}
+
+func PutUser(c *gin.Context) {
+	db := database.GetDB()
+	var size models1.UpdateUser
+	contentType := helpers.GetContentType(c)
+	userData := c.MustGet("userData").(jwt.MapClaims)
+	userID := int(userData["user_id"].(float64))
+	if contentType == appJSON {
+		if err := c.ShouldBindJSON(&size); err != nil {
+			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
+			c.JSON(http.StatusBadRequest, response)
+			return
+		}
+	} else {
+		if err := c.ShouldBind(&size); err != nil {
+			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
+			c.JSON(http.StatusBadRequest, response)
+			return
+		}
+	}
+	err := db.Debug().Model(&size).Where("id=?", userID).Updates(&size).Error
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+		response := helpers.APIResponse("gagal update user!", http.StatusInternalServerError, errorMessage)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helpers.APIResponse("berhasil update data user!", http.StatusOK, gin.H{
+		"user": size,
 	})
 	c.JSON(http.StatusOK, response)
 }
