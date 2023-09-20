@@ -27,7 +27,12 @@ func PostPackage(c *gin.Context) {
 			return
 		}
 	}
-	err := db.Debug().Create(&package1).Error
+	kriteria:=models1.InputPackage{
+		MotifID: package1.MotifID,
+		SizeID: package1.SizeID,
+		ProductID: package1.ProductID,
+	}
+	err := db.Debug().Where(kriteria).FirstOrCreate(&package1).Error
 	if err != nil {
 		errorMessage := gin.H{"errors": err.Error()}
 		response := helpers.APIResponse("gagal menambah data package1!", http.StatusInternalServerError, errorMessage)
