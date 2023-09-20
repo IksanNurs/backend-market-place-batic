@@ -32,6 +32,7 @@ type Package struct {
 }
 
 type InputPackage struct {
+	ID        int32  `gorm:"column:id;type:int(11);primaryKey;autoIncrement:true" json:"id"`
 	MotifID   int32  `gorm:"column:motif_id;type:int(11);not null" json:"motif_id"`
 	SizeID    int32  `gorm:"column:size_id;type:int(11);not null" json:"size_id"`
 	ProductID int32  `gorm:"column:product_id;type:int(11);not null" json:"product_id"`
