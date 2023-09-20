@@ -9,7 +9,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,18 +19,10 @@ func PostMotif(c *gin.Context) {
 	if err != nil {
 		file = nil
 	}
-	userData := c.MustGet("userData").(jwt.MapClaims)
-	userID := int(userData["user_id"].(float64))
+	// userData := c.MustGet("userData").(jwt.MapClaims)
+	// userID := int(userData["user_id"].(float64))
 	if file != nil {
 		fileName = file.Filename
-		path := fmt.Sprintf("img/motif/%d-%s", userID, file.Filename)
-		err = c.SaveUploadedFile(file, path)
-		if err != nil {
-			errorMessage := gin.H{"errors": err.Error()}
-			response := helpers.APIResponse("gagal menambah data motif!", http.StatusInternalServerError, errorMessage)
-			c.JSON(http.StatusInternalServerError, response)
-			return
-		}
 	}
 	price, _ := strconv.Atoi(c.PostForm("price"))
 	product_id, _ := strconv.Atoi(c.PostForm("product_id"))
@@ -42,6 +33,16 @@ func PostMotif(c *gin.Context) {
 		response := helpers.APIResponse("gagal menambah data motif!", http.StatusInternalServerError, errorMessage)
 		c.JSON(http.StatusInternalServerError, response)
 		return
+	}
+	if file != nil {
+		path := fmt.Sprintf("img/motif/%d-%s", motif.ID, file.Filename)
+		err = c.SaveUploadedFile(file, path)
+		if err != nil {
+			errorMessage := gin.H{"errors": err.Error()}
+			response := helpers.APIResponse("gagal menambah data motif!", http.StatusInternalServerError, errorMessage)
+			c.JSON(http.StatusInternalServerError, response)
+			return
+		}
 	}
 	response := helpers.APIResponse("berhasil menambah data motif!", http.StatusOK, gin.H{
 		"motif": motif,
@@ -57,18 +58,10 @@ func PutMotif(c *gin.Context) {
 	if err != nil {
 		file = nil
 	}
-	userData := c.MustGet("userData").(jwt.MapClaims)
-	userID := int(userData["user_id"].(float64))
+	// userData := c.MustGet("userData").(jwt.MapClaims)
+	// userID := int(userData["user_id"].(float64))
 	if file != nil {
 		fileName = file.Filename
-		path := fmt.Sprintf("img/motif/%d-%s", userID, file.Filename)
-		err = c.SaveUploadedFile(file, path)
-		if err != nil {
-			errorMessage := gin.H{"errors": err.Error()}
-			response := helpers.APIResponse("gagal menambah data motif!", http.StatusInternalServerError, errorMessage)
-			c.JSON(http.StatusInternalServerError, response)
-			return
-		}
 	}
 
 	price, _ := strconv.Atoi(c.PostForm("price"))
@@ -101,6 +94,17 @@ func PutMotif(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, errorMessage)
 		return
 	}
+	if file != nil {
+		path := fmt.Sprintf("img/motif/%s-%s", c.PostForm("id"), file.Filename)
+		err = c.SaveUploadedFile(file, path)
+		if err != nil {
+			errorMessage := gin.H{"errors": err.Error()}
+			response := helpers.APIResponse("gagal menambah data motif!", http.StatusInternalServerError, errorMessage)
+			c.JSON(http.StatusInternalServerError, response)
+			return
+		}
+	}
+
 	response := helpers.APIResponse("berhasil update data motif!", http.StatusOK, gin.H{
 		"motif": motif,
 	})

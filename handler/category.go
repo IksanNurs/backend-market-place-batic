@@ -23,14 +23,6 @@ func PostCategory(c *gin.Context) {
 	userID := int(userData["user_id"].(float64))
 	if file != nil {
 		fileName = file.Filename
-		path := fmt.Sprintf("img/category/%d-%s", userID, file.Filename)
-		err = c.SaveUploadedFile(file, path)
-		if err != nil {
-			errorMessage := gin.H{"errors": err.Error()}
-			response := helpers.APIResponse("gagal menambah data category!", http.StatusInternalServerError, errorMessage)
-			c.JSON(http.StatusInternalServerError, response)
-			return
-		}
 	}
 
 	category := models1.Category{Name: c.PostForm("name"), Image: fileName, UserID: int32(userID)}
@@ -41,6 +33,17 @@ func PostCategory(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
+	if file != nil {
+		path := fmt.Sprintf("img/category/%d-%s", category.ID, file.Filename)
+		err = c.SaveUploadedFile(file, path)
+		if err != nil {
+			errorMessage := gin.H{"errors": err.Error()}
+			response := helpers.APIResponse("gagal menambah data category!", http.StatusInternalServerError, errorMessage)
+			c.JSON(http.StatusInternalServerError, response)
+			return
+		}
+	}
+
 	response := helpers.APIResponse("berhasil menambah data kategori!", http.StatusOK, gin.H{
 		"category": category,
 	})
@@ -59,14 +62,6 @@ func PutCategory(c *gin.Context) {
 	userID := int(userData["user_id"].(float64))
 	if file != nil {
 		fileName = file.Filename
-		path := fmt.Sprintf("img/category/%d-%s", userID, file.Filename)
-		err = c.SaveUploadedFile(file, path)
-		if err != nil {
-			errorMessage := gin.H{"errors": err.Error()}
-			response := helpers.APIResponse("gagal menambah data category!", http.StatusInternalServerError, errorMessage)
-			c.JSON(http.StatusInternalServerError, response)
-			return
-		}
 	}
 
 	category := models1.Category{Name: c.PostForm("name"), Image: fileName, UserID: int32(userID)}
@@ -96,6 +91,16 @@ func PutCategory(c *gin.Context) {
 		errorMessage := gin.H{"errors": err.Error()}
 		c.JSON(http.StatusInternalServerError, errorMessage)
 		return
+	}
+	if file != nil {
+		path := fmt.Sprintf("img/category/%s-%s", c.PostForm("id"), file.Filename)
+		err = c.SaveUploadedFile(file, path)
+		if err != nil {
+			errorMessage := gin.H{"errors": err.Error()}
+			response := helpers.APIResponse("gagal menambah data category!", http.StatusInternalServerError, errorMessage)
+			c.JSON(http.StatusInternalServerError, response)
+			return
+		}
 	}
 	response := helpers.APIResponse("berhasil update data kategori!", http.StatusOK, gin.H{
 		"category": category,
