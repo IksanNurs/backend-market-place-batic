@@ -14,6 +14,10 @@ var (
 	appJSON = "application/json"
 )
 
+type User1 struct {
+	IsSales int `json:"is_sales"`
+}
+
 func Register(c *gin.Context) {
 	db := database.GetDB()
 
@@ -32,10 +36,10 @@ func Register(c *gin.Context) {
 			return
 		}
 	}
-	user:=models1.User{
-		Name: inputuser.Name,
-		Email: inputuser.Email,
-		Phone: inputuser.Phone,
+	user := models1.User{
+		Name:         inputuser.Name,
+		Email:        inputuser.Email,
+		Phone:        inputuser.Phone,
 		PasswordHash: inputuser.PasswordHash,
 	}
 	err := db.Debug().Create(&user).Error
@@ -83,16 +87,23 @@ func Login(c *gin.Context) {
 	}
 	err := db.Debug().Where("email = ? OR phone = ?", inputuser.Email, inputuser.Phone).First(&user).Error
 	if err != nil {
-		errorMessage := gin.H{"errors": err.Error()}
-		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, errorMessage)
+		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
+			"user": User1{
+				IsSales: 0,
+			},
+		})
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(inputuser.PasswordHash))
 	if err != nil {
-		errorMessage := gin.H{"errors": err.Error()}
-		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, errorMessage)
+		//errorMessage := gin.H{"errors": err.Error()}
+		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
+			"user": User1{
+				IsSales: 0,
+			},
+		})
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
