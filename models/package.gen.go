@@ -33,9 +33,9 @@ type Package struct {
 
 type InputPackage struct {
 	ID        int32  `gorm:"column:id;type:int(11);primaryKey;autoIncrement:true" json:"id"`
-	MotifID   int32  `gorm:"column:motif_id;type:int(11);not null" json:"motif_id"`
-	SizeID    int32  `gorm:"column:size_id;type:int(11);not null" json:"size_id"`
-	ProductID int32  `gorm:"column:product_id;type:int(11);not null" json:"product_id"`
+	MotifID   int32  `gorm:"column:motif_id;type:int(11);not null" json:"motif_id" form:"motif_id"`
+	SizeID    int32  `gorm:"column:size_id;type:int(11);not null" json:"size_id" form:"size_id"`
+	ProductID int32  `gorm:"column:product_id;type:int(11);not null" json:"product_id" form:"product_id"`
 	MethodID  int32  `gorm:"column:method_id;type:int(11);not null" json:"method_id"`
 	ShippingID  int32  `gorm:"column:shipping_id;type:int(11);not null" json:"shipping_id"`
 	Note      string `gorm:"column:note;type:text;not null" json:"note"`

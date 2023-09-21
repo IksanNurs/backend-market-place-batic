@@ -13,20 +13,12 @@ import (
 func PostPackage(c *gin.Context) {
 	db := database.GetDB()
 	var package1 models1.InputPackage
-	contentType := helpers.GetContentType(c)
-	if contentType == appJSON {
 		if err := c.ShouldBindJSON(&package1); err != nil {
 			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
 			c.JSON(http.StatusBadRequest, response)
 			return
 		}
-	} else {
-		if err := c.ShouldBind(&package1); err != nil {
-			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
-			c.JSON(http.StatusBadRequest, response)
-			return
-		}
-	}
+
 	err := db.Debug().Create(&package1).Error
 	if err != nil {
 		errorMessage := gin.H{"errors": err.Error()}
@@ -43,20 +35,11 @@ func PostPackage(c *gin.Context) {
 func PutPackage(c *gin.Context) {
 	db := database.GetDB()
 	var package1 models1.UpdatePackage
-	contentType := helpers.GetContentType(c)
-	if contentType == appJSON {
 		if err := c.ShouldBindJSON(&package1); err != nil {
 			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
 			c.JSON(http.StatusBadRequest, response)
 			return
 		}
-	} else {
-		if err := c.ShouldBind(&package1); err != nil {
-			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
-			c.JSON(http.StatusBadRequest, response)
-			return
-		}
-	}
 	err := db.Debug().Model(&package1).Where("id=?", package1.ID).Updates(&package1).Error
 	if err != nil {
 		errorMessage := gin.H{"errors": err.Error()}
