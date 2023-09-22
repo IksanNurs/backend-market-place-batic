@@ -141,21 +141,12 @@ func GetOneUser(c *gin.Context) {
 func PutUser(c *gin.Context) {
 	db := database.GetDB()
 	var size models1.UpdateUser
-	contentType := helpers.GetContentType(c)
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	userID := int(userData["user_id"].(float64))
-	if contentType == appJSON {
-		if err := c.ShouldBindJSON(&size); err != nil {
-			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
-			c.JSON(http.StatusBadRequest, response)
-			return
-		}
-	} else {
-		if err := c.ShouldBind(&size); err != nil {
-			response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
-			c.JSON(http.StatusBadRequest, response)
-			return
-		}
+	if err := c.ShouldBindJSON(&size); err != nil {
+		response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
 	}
 	err := db.Debug().Model(&size).Where("id=?", userID).Updates(&size).Error
 	if err != nil {
