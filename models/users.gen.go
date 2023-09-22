@@ -27,16 +27,16 @@ type User struct {
 }
 
 type InputUser struct {
-	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name"`
-	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email"`
-	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
+	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name" binding:"required"`
+	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email" binding:"required"`
+	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone" binding:"required"`
 	PasswordHash string `gorm:"column:password_hash;type:varchar(255);not null" json:"password_hash"`
 }
 
 type UpdateUser struct {
-	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name"`
-	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email"`
-	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
+	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name" binding:"required"`
+	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email" binding:"required"`
+	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone" binding:"required"`
 }
 
 
