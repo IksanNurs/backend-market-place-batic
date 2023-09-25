@@ -39,6 +39,13 @@ type UpdateUser struct {
 	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
 }
 
+type InputUser1 struct {
+	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
+	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email" binding:"required"`
+	PasswordHash string `gorm:"column:password_hash;type:varchar(255);not null" json:"password_hash" binding:"required"`
+	CreatedAt    int32  `gorm:"column:created_at;type:int(11);not null" json:"created_at"`
+}
+
 
 
 
@@ -50,9 +57,21 @@ func (i *User) BeforeCreate(scope *gorm.Scope) error {
     return nil
 }
 
+func (i *InputUser1) BeforeCreate(scope *gorm.Scope) error {
+    now := int32(time.Now().Unix())
+    i.CreatedAt = now
+
+    return nil
+}
+
+
 
 // TableName User's table name
 func (*User) TableName() string {
+	return TableNameUser
+}
+
+func (*InputUser1) TableName() string {
 	return TableNameUser
 }
 
