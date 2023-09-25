@@ -39,6 +39,11 @@ type UpdateUser struct {
 	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
 }
 
+type UpdateUser1 struct {
+	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name"`
+}
+
+
 type InputUser1 struct {
 	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
 	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email" binding:"required"`
@@ -79,5 +84,10 @@ func (*InputUser1) TableName() string {
 func (*UpdateUser) TableName() string {
 	return TableNameUser
 }
+
+func (*UpdateUser1) TableName() string {
+	return TableNameUser
+}
+
 
 

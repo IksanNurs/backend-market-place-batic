@@ -200,3 +200,25 @@ func PutUser(c *gin.Context) {
 	})
 	c.JSON(http.StatusOK, response)
 }
+
+func PutUser1(c *gin.Context) {
+	db := database.GetDB()
+	var size models1.UpdateUser1
+	if err := c.ShouldBindJSON(&size); err != nil {
+		response := helpers.APIResponse(err.Error(), http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	err := db.Debug().Model(&size).Where("id=?", 43).Updates(&size).Error
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+		response := helpers.APIResponse("gagal update user!", http.StatusInternalServerError, errorMessage)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helpers.APIResponse("berhasil update data user!", http.StatusOK, gin.H{
+		"user": size,
+	})
+	c.JSON(http.StatusOK, response)
+}
