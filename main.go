@@ -42,7 +42,7 @@ func main() {
 		api.POST("/auth/register1", handler.Register1)
 		api.GET("/user", middlewares.Authentication(), handler.GetOneUser)
 		api.PUT("/user", middlewares.Authentication(), handler.PutUser)
-		api.PUT("/user1", handler.PutUser)
+		api.PUT("/user1", handler.PutUser1)
 
 		//category
 		api.POST("/category", middlewares.Authentication(), handler.PostCategory)
