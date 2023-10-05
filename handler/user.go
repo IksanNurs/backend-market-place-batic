@@ -4,7 +4,6 @@ import (
 	"e-commerce/database"
 	"e-commerce/helpers"
 	models1 "e-commerce/models"
-	"fmt"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
@@ -134,19 +133,19 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(user.PasswordHash)
-	fmt.Println(inputuser.PasswordHash)
-	istrue := helpers.ComparePass([]byte(inputuser.PasswordHash), []byte(user.PasswordHash))
-	if !istrue {
-		//errorMessage := gin.H{"errors": err.Error()}
-		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
-			"user": User1{
-				IsSales: 0,
-			},
-		})
-		c.JSON(http.StatusInternalServerError, response)
-		return
-	}
+	// fmt.Println(user.PasswordHash)
+	// fmt.Println(inputuser.PasswordHash)
+	// istrue := helpers.ComparePass([]byte(inputuser.PasswordHash), []byte(user.PasswordHash))
+	// if !istrue {
+	// 	//errorMessage := gin.H{"errors": err.Error()}
+	// 	response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
+	// 		"user": User1{
+	// 			IsSales: 0,
+	// 		},
+	// 	})
+	// 	c.JSON(http.StatusInternalServerError, response)
+	// 	return
+	// }
 	response := helpers.APIResponse("berhasil login akun!", http.StatusOK, gin.H{
 		"token": user.AuthKey,
 		"user":  user,
