@@ -39,17 +39,17 @@ type UpdateUser struct {
 	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
 }
 
-type UpdateUser1 struct {
-	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name"`
-}
+// type UpdateUser1 struct {
+// 	Name         string `gorm:"column:name;type:varchar(50);not null" json:"name"`
+// }
 
 
-type InputUser1 struct {
-	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
-	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email" binding:"required"`
-	PasswordHash string `gorm:"column:password_hash;type:varchar(255);not null" json:"password_hash" binding:"required"`
-	CreatedAt    int32  `gorm:"column:created_at;type:int(11);not null" json:"created_at"`
-}
+// type InputUser1 struct {
+// 	Phone        string `gorm:"column:phone;type:varchar(50);not null" json:"phone"`
+// 	Email        string `gorm:"column:email;type:varchar(50);not null" json:"email" binding:"required"`
+// 	PasswordHash string `gorm:"column:password_hash;type:varchar(255);not null" json:"password_hash" binding:"required"`
+// 	CreatedAt    int32  `gorm:"column:created_at;type:int(11);not null" json:"created_at"`
+// }
 
 
 
@@ -62,12 +62,12 @@ func (i *User) BeforeCreate(scope *gorm.Scope) error {
     return nil
 }
 
-func (i *InputUser1) BeforeCreate(scope *gorm.Scope) error {
-    now := int32(time.Now().Unix())
-    i.CreatedAt = now
+// func (i *InputUser1) BeforeCreate(scope *gorm.Scope) error {
+//     now := int32(time.Now().Unix())
+//     i.CreatedAt = now
 
-    return nil
-}
+//     return nil
+// }
 
 
 
@@ -76,18 +76,18 @@ func (*User) TableName() string {
 	return TableNameUser
 }
 
-func (*InputUser1) TableName() string {
-	return TableNameUser
-}
+// func (*InputUser1) TableName() string {
+// 	return TableNameUser
+// }
 
 
 func (*UpdateUser) TableName() string {
 	return TableNameUser
 }
 
-func (*UpdateUser1) TableName() string {
-	return TableNameUser
-}
+// func (*UpdateUser1) TableName() string {
+// 	return TableNameUser
+// }
 
 
 
