@@ -8,7 +8,6 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -134,10 +133,10 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(inputuser.PasswordHash))
-	if err != nil {
+	istrue := helpers.ComparePass([]byte(user.PasswordHash), []byte(inputuser.PasswordHash))
+	if !istrue {
 		//errorMessage := gin.H{"errors": err.Error()}
-		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
+		response := helpers.APIResponse("gagal login akun! "+err.Error(), http.StatusInternalServerError, gin.H{
 			"user": User1{
 				IsSales: 0,
 			},
