@@ -136,7 +136,7 @@ func Login(c *gin.Context) {
 
 	fmt.Println(user.PasswordHash)
 	fmt.Println(inputuser.PasswordHash)
-	istrue := helpers.ComparePass([]byte(user.PasswordHash), []byte(inputuser.PasswordHash))
+	istrue := helpers.ComparePass([]byte(inputuser.PasswordHash), []byte(user.PasswordHash))
 	if !istrue {
 		//errorMessage := gin.H{"errors": err.Error()}
 		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
