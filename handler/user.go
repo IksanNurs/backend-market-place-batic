@@ -4,6 +4,7 @@ import (
 	"e-commerce/database"
 	"e-commerce/helpers"
 	models1 "e-commerce/models"
+	"fmt"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
@@ -122,7 +123,7 @@ func Login(c *gin.Context) {
 			return
 		}
 	}
-	err := db.Debug().Where("email = ? OR phone = ?", inputuser.Email, inputuser.Phone).First(&user).Error
+	err := db.Debug().Where("email = ?", inputuser.Email).First(&user).Error
 	if err != nil {
 		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
 			"user": User1{
@@ -133,6 +134,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(user.PasswordHash)
+	fmt.Println(inputuser.PasswordHash)
 	istrue := helpers.ComparePass([]byte(user.PasswordHash), []byte(inputuser.PasswordHash))
 	if !istrue {
 		//errorMessage := gin.H{"errors": err.Error()}
