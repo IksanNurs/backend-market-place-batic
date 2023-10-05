@@ -36,11 +36,12 @@ func Register(c *gin.Context) {
 			return
 		}
 	}
+	PasswordHashChart := helpers.HassPass(inputuser.PasswordHash)
 	user := models1.User{
 		Name:         inputuser.Name,
 		Email:        inputuser.Email,
 		Phone:        inputuser.Phone,
-		PasswordHash: inputuser.PasswordHash,
+		PasswordHash: PasswordHashChart,
 	}
 	err := db.Debug().Create(&user).Error
 	if err != nil {
@@ -135,17 +136,17 @@ func Login(c *gin.Context) {
 
 	// fmt.Println(user.PasswordHash)
 	// fmt.Println(inputuser.PasswordHash)
-	// istrue := helpers.ComparePass([]byte(inputuser.PasswordHash), []byte(user.PasswordHash))
-	// if !istrue {
-	// 	//errorMessage := gin.H{"errors": err.Error()}
-	// 	response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
-	// 		"user": User1{
-	// 			IsSales: 0,
-	// 		},
-	// 	})
-	// 	c.JSON(http.StatusInternalServerError, response)
-	// 	return
-	// }
+	istrue := helpers.ComparePass([]byte(user.PasswordHash), []byte(inputuser.PasswordHash))
+	if !istrue {
+		//errorMessage := gin.H{"errors": err.Error()}
+		response := helpers.APIResponse("gagal login akun!", http.StatusInternalServerError, gin.H{
+			"user": User1{
+				IsSales: 0,
+			},
+		})
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
 	response := helpers.APIResponse("berhasil login akun!", http.StatusOK, gin.H{
 		"token": user.AuthKey,
 		"user":  user,

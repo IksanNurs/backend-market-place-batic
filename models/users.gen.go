@@ -5,7 +5,6 @@
 package model
 
 import (
-	"e-commerce/helpers"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -57,7 +56,6 @@ type UpdateUser struct {
 func (i *User) BeforeCreate(scope *gorm.Scope) error {
     now := int32(time.Now().Unix())
     i.CreatedAt = now
-	 i.PasswordHash= helpers.HassPass(i.PasswordHash)
 
     return nil
 }
