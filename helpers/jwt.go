@@ -73,12 +73,13 @@ func GenerateToken1(id int, email string) string {
 	return singnedToken
 }
 
-func GenerateToken(id int, email string, phone string) string {
+func GenerateToken(id int, email string, phone string, username string) string {
 	expirationTime := time.Now().Add(24 * time.Hour).Unix()
 	claims := jwt.MapClaims{
 		"user_id":            id,
 		"email":              email,
 		"phone":              phone,
+		"username":           username,
 		"expired_at":         expirationTime,
 	}
 	parseToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

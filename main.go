@@ -78,6 +78,13 @@ func main() {
 		api.PUT("/package", middlewares.Authentication(), handler.PutPackage)
 		api.GET("/package/:id", middlewares.Authentication(), handler.GetOnePackage)
 
+		//
+		api.POST("/notification-order", handler.PostNotification)
+
+		//order
+		api.POST("/order", middlewares.Authentication(), handler.PostOrder)
+		api.GET("/order", middlewares.Authentication(), handler.GetAllOrder)
+
 	}
 
 	r.Run(":" + os.Getenv("PORT"))

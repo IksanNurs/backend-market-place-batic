@@ -51,7 +51,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	tokenString := helpers.GenerateToken(int(user.ID), user.Email, user.Phone)
+	tokenString := helpers.GenerateToken(int(user.ID), user.Email, user.Phone, user.Name)
 	err = db.Table("users").Where("id = ?", user.ID).UpdateColumn("auth_key", tokenString).Error
 	if err != nil {
 		errorMessage := gin.H{"errors": err.Error()}

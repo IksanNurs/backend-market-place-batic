@@ -76,3 +76,11 @@ func (*InputPackage) TableName() string {
 func (*UpdatePackage) TableName() string {
 	return TableNamePackage
 }
+
+func (*PackagePrice) TableName() string {
+	return TableNamePackage
+}
+
+type PackagePrice struct {
+   Price         int32   `gorm:"column:price;type:int(11);not null" json:"price"`
+}
